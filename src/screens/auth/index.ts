@@ -1,0 +1,9 @@
+export { default as Contact } from "./Contact";
+export { default as ForgotPassword } from "./ForgotPassword";
+export { default as Landing } from "./Landing";
+export { default as Login } from "./Login";
+export { default as OTP } from "./OTP";
+export { default as ResetPassword } from "./ResetPassword";
+export { default as AuthLanding } from "./AuthLanding";
+export { default as EmailLogin } from "./EmailLogin";
+export { default as PhoneLogin } from "./PhoneLogin";
