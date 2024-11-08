@@ -5,8 +5,8 @@ export const CryptoJsEncryptionKey = "CryptoJsEncryptionKey";
 
 const baseURLs = {
   dev: { baseUrl: "http://localhost:3000" },
-  staging: { baseUrl: "https://sfx.eastus.cloudapp.azure.com" },
-  prod: { baseUrl: "https://sfx.eastus.cloudapp.azure.com" },
+  staging: { baseUrl: "https://salefox-api.woodenclouds.in" },
+  prod: { baseUrl: "https://salefox-api.woodenclouds.in" },
 };
 
 export const API_ROUTE = `${baseURLs[server].baseUrl}/`;

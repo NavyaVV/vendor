@@ -11,7 +11,7 @@ import ROUTES from "./routes";
 const Tab = createBottomTabNavigator<AppTabParamList>();
 
 export default () => (
-  <Tab.Navigator tabBar={tabBar}>
+  <Tab.Navigator tabBar={tabBar} initialRouteName={ROUTES.HOME}>
     <Tab.Screen
       name={ROUTES.HOME}
       component={Home}

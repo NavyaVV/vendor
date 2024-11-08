@@ -62,6 +62,7 @@ export interface serviceParams {
   service_type?: string;
   description?: string;
   price?: number;
+  user?: string
 }
 
 export interface locationParams {
@@ -104,6 +105,7 @@ export interface serviceDetailsState {
   deleted_date: string;
   is_deleted: boolean;
   is_active: boolean;
+  user: string
 }
 
 export interface filterParamsState {

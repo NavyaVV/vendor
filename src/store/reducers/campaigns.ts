@@ -178,20 +178,24 @@ export const campaignsDetails = createAsyncThunk<Response, Arguments>(
       const res = await campaignDetailsService(id);
       const listRes = await campaignChecklistsService(id);
       if (res?.data?.statusCode === 200) {
-        const checklists =
-          listRes?.data?.data?.campaignField?.map(
-            ({ name }: { name: string }) => name
-          ) ?? [];
+        const checklists = 
+          Array.isArray(listRes?.data?.data?.campaignField) 
+            ? listRes.data.data.campaignField.map(({ name }: { name: string }) => name) 
+            : []; // Provide default empty array
+        
         return {
           campaignsDetailsData: { ...res.data.data.campaign, checklists },
           error: null,
         };
-      } else return rejectWithValue(res.data.error);
+      } else {
+        return rejectWithValue(res.data.error);
+      }
     } catch (e) {
       return rejectWithValue(undefined);
     }
   }
 );
+
 
 export const editCampaign = createAsyncThunk<
   Response,

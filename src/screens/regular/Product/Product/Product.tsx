@@ -22,7 +22,7 @@ export default () => {
   )?.category_name;
 
   const { product_images = [] } = productDetail;
-  console.log("product_images :", product_images);
+  // console.log("product_images :", product_images);
 
   return (
     <Box flex={1} backgroundColor="secondary">

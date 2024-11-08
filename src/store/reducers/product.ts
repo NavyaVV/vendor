@@ -49,17 +49,24 @@ export const productListing = createAsyncThunk<Response, Arguments, Reducer>(
   async ({ arg }, { rejectWithValue }) => {
     try {
       const res = await productService(arg);
-      if (res?.data?.statusCode === 200)
+      console.log(res.data.result.category_list, 'product listing');
+      
+      if (res?.data?.statusCode === 200) {
         return {
-          productData: res.data.result,
+          productData: res.data.result, // Product list if available
+          categoryList: res.data.result.category_list, // Category list
           error: null,
         };
-      else return rejectWithValue(res.data.error);
+
+      } else {
+        return rejectWithValue(res.data.error);
+      }
     } catch (e) {
       return rejectWithValue(null);
     }
   }
 );
+
 
 export const productListPagination = createAsyncThunk<
   Response,
@@ -83,21 +90,37 @@ export const addProduct = createAsyncThunk<Response, Arguments, Reducer>(
   "product/addProduct",
   async ({ arg, callback }, { rejectWithValue, dispatch }) => {
     try {
+      console.log("Arguments for adding product:", arg);
+
+      // Additional check for vendor ID
+      if (!arg.vendor) {
+        console.error("Vendor ID is missing");
+        return rejectWithValue({ error: "Vendor ID is missing" });
+      }
+
       const res = await addProductService(arg);
+      console.log("Response from addProductService:", res);
+
       if (res?.data?.statusCode === 201) {
         const param = { limit: 50, ordering: "-updated_date" };
         dispatch(productListing({ arg: param }));
         if (callback) callback();
-        return {
+        return {        
           addedProductData: res.data.result,
           error: null,
         };
-      } else return rejectWithValue(res.data.error);
+      } else {
+        console.error("Add Product Error:", res.data.error);
+        return rejectWithValue(res.data.error);
+      }
+
     } catch (e) {
+      console.error("Error in addProduct:", e);
       return rejectWithValue(null);
     }
   }
 );
+
 
 export const editProduct = createAsyncThunk<Response, Arguments, Reducer>(
   "product/editProduct",
@@ -106,20 +129,31 @@ export const editProduct = createAsyncThunk<Response, Arguments, Reducer>(
       if (id) {
         const res = await productEditService(id, arg);
         if (res?.data?.statusCode === 200) {
+          // Log the edited product details
+          console.log("Edited Product Details:", res.data.result.result);
+          
           const param = { limit: 50, ordering: "-updated_date" };
+          console.log(arg,"argss", param, 'Argmntssss');
+          
           dispatch(productListing({ arg: param }));
           if (callback) callback();
           return {
             productDetails: res.data.result.result,
             error: null,
           };
-        } else return rejectWithValue(res.data.error);
-      } else return rejectWithValue(null);
+        } else {
+          return rejectWithValue(res.data.error);
+        }
+      } else {
+        return rejectWithValue(null);
+      }
     } catch (e) {
+      console.error("Edit Product Error:", e); // Log any errors that occur
       return rejectWithValue(null);
     }
   }
 );
+
 
 export const productCategory = createAsyncThunk<Response, undefined, Reducer>(
   "product/productCategory",

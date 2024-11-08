@@ -27,6 +27,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { ScrollView } from "react-native";
 import { getAlert } from "@store/selector/common";
 import { navigate } from "@config/NavigationHelper";
+import { getUserReferenceId } from "@store/selector/auth";
 
 export default ({
   route,
@@ -39,8 +40,12 @@ export default ({
   const isEditService = !!serviceDetail?.id;
   const [formData, setFormData] = useState<addServiceParams>({});
   const dispatch = useAppDispatch();
-
+  const clientId = useAppSelector(getUserReferenceId);
   const alert = useAppSelector(getAlert);
+
+
+  console.log(clientId, 'clientidd');
+  
   useEffect(() => {
     if (alert?.success) {
       navigate(ROUTES.PORTFOLIO);
@@ -51,27 +56,89 @@ export default ({
     ? formData?.service_loc[0].area
     : undefined;
 
-  useEffect(() => {
-    if (route.params?.item) setFormData(route.params?.item);
-    dispatch(serviceType());
-  }, [dispatch, route.params?.item]);
+    useEffect(() => {
+      if (route.params?.item) setFormData(route.params?.item);
+      dispatch(serviceType());
+      // Add user field to formData
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        user: clientId,
+      }));
+    }, [dispatch, route.params?.item, clientId]);
+    
 
-  const handleSubmit = () => {
-    const validation = addServiceValidation(formData);
-    dispatch(setError(validation.errorMsg));
-    if (!validation.status) {
+
+    const handleSubmit = async () => {
+      console.log("Submit button pressed", formData);
+    
+      // Form validation
+      const validation = addServiceValidation(formData);
+      console.log("Validation result:", validation);
+    
+      if (!validation.status) {
+        console.log("Validation failed:", validation.errorMsg);
+        dispatch(setError(validation.errorMsg));
+        return;
+      }
+    
+      const payload = {
+        service: {
+          service_name: formData?.service?.service_name,
+          service_type: formData?.service?.service_type,
+          price: formData?.service?.price,
+          description: formData?.service?.description,
+          user: clientId,
+        },
+        service_loc: formData?.service_loc ? [
+          {
+            area: formData?.service_loc[0]?.area,
+            city: formData?.service_loc[0]?.city,
+            country: formData?.service_loc[0]?.country,
+            district: formData?.service_loc[0]?.district,
+            latitude: formData?.service_loc[0]?.latitude,
+            longitude: formData?.service_loc[0]?.longitude,
+            state: formData?.service_loc[0]?.state,
+          }
+        ] : [],
+      };
+    
       const callback = goBack;
-      const params = { id: serviceDetail?.id, arg: formData, callback };
-      if (isEditService) dispatch(editService(params));
-      else dispatch(addService(params));
-    }
-  };
-
+      const params = {
+        id: serviceDetail?.id,
+        arg: payload,
+        callback,
+      };
+    
+      try {
+        const response = isEditService
+          ? await dispatch(editService(params)).unwrap()
+          : await dispatch(addService(params)).unwrap();
+    
+        // Check if the response indicates a successful submission
+        if (response?.statusCode === 201 && response?.status) {
+          console.log("Data submitted successfully");
+          goBack(); // Navigate back on successful submission
+        } else {
+          // Handle unexpected response structure or status
+          const errorMsg = response?.message || "An unexpected error occurred";
+          console.log("Unexpected response:", errorMsg);
+          dispatch(setError(errorMsg));
+        }
+      } catch (error) {
+        const errorMsg = error?.response?.data?.message || "An unexpected error occurred";
+        const statusCode = error?.response?.status;
+        console.log("API error:", errorMsg, "Status Code:", statusCode);
+        dispatch(setError(errorMsg));
+      }
+    };
+    
+  
   const handleTextChange = (
     key: keyof serviceParams | "service_loc",
     value: string | number | locationParams
   ) => {
     dispatch(setError({ ...errors, [key]: null }));
+
     const data =
       typeof value !== "string" && typeof value !== "number"
         ? { service_loc: [value] }
@@ -89,7 +156,7 @@ export default ({
         behavior="padding"
         enabled
       >
-        <ScrollView keyboardShouldPersistTaps>
+        <ScrollView keyboardShouldPersistTaps="handled">
           <Box marginHorizontal="xxl" marginTop="xxl" marginBottom="xl">
             <CustomTextInput
               label="SERVICE NAME"

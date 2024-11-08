@@ -58,12 +58,13 @@ export default ({
       progress.value,
       [0, transitionHeight],
       [0, -transitionHeight],
-      Extrapolate.CLAMP
+      Extrapolate.CLAMP 
     );
     return {
       transform: [{ translateY: headerTranslation }],
     };
   });
+  
 
   const renderFooter = () => (
     <>

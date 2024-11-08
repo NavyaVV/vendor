@@ -45,15 +45,15 @@ export const getCampData = createSelector(
 export const getCampaignChecklistLookup = createSelector(
   getCampaigns,
   (campaigns) => {
-    const checklist = campaigns.campaignChecklistLookup.map((checklist) => {
-      return {
-        field_name: checklist?.name || checklist?.field_name,
-        field_type: checklist.contract.type || checklist?.field_type,
-        id: checklist.id,
-        is_required: true,
-        is_default: true,
-      }
-    })
-    return checklist
+    const checklist = Array.isArray(campaigns.campaignChecklistLookup)
+      ? campaigns.campaignChecklistLookup.map((checklist) => ({
+          field_name: checklist?.name || checklist?.field_name,
+          field_type: checklist?.contract?.type || checklist?.field_type,
+          id: checklist.id,
+          is_required: true,
+          is_default: true,
+        }))
+      : []; // Return an empty array if campaignChecklistLookup is null or not an array
+    return checklist;
   }
 );

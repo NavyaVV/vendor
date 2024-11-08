@@ -78,7 +78,7 @@ export default () => {
       <Box flex={1} paddingHorizontal="ml">
         <CustomFlatlist
           renderItem={renderItem}
-          data={serviceInfo?.results}
+          data={serviceInfo}
           renderHeader={renderHeader}
           onEndReached={handleEndReach}
           refreshControl={refreshControl}

@@ -13,6 +13,28 @@ export interface productImageState {
 export interface productAddImageState {
   image: string;
 }
+
+// export interface productState {
+//   id: string;
+//   created_date: string;
+//   updated_date: string;
+//   is_active: boolean;
+//   product_name: string;
+//   quantity: number;
+//   unit: string;
+//   max_retail_price: string;
+//   wholesale_price: string;
+//   offer_price: string;
+//   document_ref: string;
+//   description: string;
+//   user: string;
+//   product_category: string | null;
+//   vendor: string;
+//   product_image: Array<{
+//       image_ref: string;
+//     }>;
+// }
+
 export interface productState {
   product: {
     id: string;
@@ -79,6 +101,24 @@ export interface addProductParams {
     product_category?: string | null;
     vendor?: string | null;
   };
+  product_images?: Array<addImageParams>;
+}
+
+export interface addProductParamsnew {
+  is_active?: boolean;
+  type?: string;
+  product_name?: string;
+  quantity?: number;
+  unit?: string;
+  max_retail_price?: string;
+  wholesale_price?: string;
+  offer_price?: string;
+  document_ref?: string;
+  description?: string;
+  user?: string;
+  product_category?: string | null;
+  vendor?: string | null;
+
   product_images?: Array<addImageParams>;
 }
 

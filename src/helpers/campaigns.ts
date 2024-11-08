@@ -86,28 +86,33 @@ export const addCheckListValidation = (
     field_name: string;
     field_type: string;
     is_required: boolean;
-  }[]
+  }[] | null
 ): {
   status: boolean;
   errorMsg: { name: string; fieldType: string }[];
 } => {
+  // Default return value with no errors
   const returnVal = {
     status: false,
-    errorMsg: checkListData.map(() => ({
+    errorMsg: checkListData?.map(() => ({
       name: "",
       fieldType: "",
-    })),
+    })) || [],
   };
-  checkListData.map((data, i) => {
-    if (!data.field_name) {
-      returnVal.status = true;
-      returnVal.errorMsg[i].name = "Required*";
-    }
-    if (!data.field_type) {
-      returnVal.status = true;
-      returnVal.errorMsg[i].fieldType = "Required*";
-    }
-  });
+
+  // Check if checkListData is valid and proceed if it is
+  if (Array.isArray(checkListData)) {
+    checkListData.forEach((data, i) => {
+      if (!data.field_name) {
+        returnVal.status = true;
+        returnVal.errorMsg[i].name = "Required*";
+      }
+      if (!data.field_type) {
+        returnVal.status = true;
+        returnVal.errorMsg[i].fieldType = "Required*";
+      }
+    });
+  }
 
   return returnVal;
 };

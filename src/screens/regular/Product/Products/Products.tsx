@@ -42,6 +42,7 @@ export default () => {
     const param = { limit: 50, ordering: "-updated_date" };
     const filterData = { ...param, ...filters };
     dispatch(productListing({ arg: filterData }));
+    
     setTimeout(() => setRefreshing(false), 1000);
   }, [dispatch, filters]);
 

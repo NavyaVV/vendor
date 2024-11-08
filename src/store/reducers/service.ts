@@ -17,6 +17,7 @@ import {
   addServiceErrorState,
   serviceListParams,
 } from "@typings/service";
+import { Alert } from "react-native";
 
 const initialState: ServiceState = {
   loading: "idle",
@@ -48,10 +49,13 @@ type Reducer = {
 export const serviceListing = createAsyncThunk<Response, Arguments, Reducer>(
   "services/serviceListing",
   async ({ arg, callback }, { rejectWithValue }) => {
+    console.log(arg, 'service listingg');
+    
     try {
       const res = await servicesService(arg ?? {});
       if (res?.data?.statusCode === 200) {
         callback && callback();
+        console.log(res?.data?.result, 'service listingg');
         return {
           serviceData: res.data.result,
           error: null,
@@ -83,27 +87,41 @@ export const servicesListPagination = createAsyncThunk<
   }
 });
 
+
 export const addService = createAsyncThunk<Response, Arguments, Reducer>(
   "services/addService",
   async ({ arg, callback }, { rejectWithValue, dispatch }) => {
     try {
       if (arg) {
+        console.log("Data being sent to API:", arg); // Log the data being sent
         const res = await servicesAddService(arg);
+        console.log("API Response:", res);
+
         if (res?.data?.statusCode === 200) {
-          // const arg = { limit: 50, ordering: "-updated_date" };
-          // dispatch(serviceListing({ arg }));
-          // if (callback) callback();
+          if (callback) callback(); // Execute callback if provided
+          Alert.alert("Success", "Service added successfully!", [{ text: "OK" }]);
           return {
             addedServiceData: res.data.result,
             error: null,
           };
-        } else return rejectWithValue(res.data.error);
-      } else return rejectWithValue(null);
+        } else {
+          console.error("Error Response:", res?.data);  // Log the complete error response
+
+          return rejectWithValue(res.data.error);
+        }
+      } else {
+        console.warn("No argument provided to addService");
+        return rejectWithValue(null);
+      }
     } catch (e) {
-      return rejectWithValue(null);
+      console.error("Caught error in addService:", e); // Detailed log for error inspection
+      return rejectWithValue(e.response?.data?.message || "An unexpected error occurred");
     }
   }
 );
+
+
+
 
 export const serviceType = createAsyncThunk<Response, undefined, Reducer>(
   "service/serviceType",

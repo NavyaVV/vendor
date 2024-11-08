@@ -26,7 +26,7 @@ export default () => {
       <ThemeProvider darkMode={false}>
         <MenuProvider>
           <Root />
-          <Alert />
+          {/* <Alert /> */}
         </MenuProvider>
       </ThemeProvider>
     </>

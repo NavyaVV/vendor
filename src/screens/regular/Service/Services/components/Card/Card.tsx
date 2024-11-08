@@ -64,7 +64,11 @@ export default ({ item, index }: itemProp) => {
           {item.service.service_name}
         </Text>
         <Info label="Type of Service" content={type?.type_name} />
-        <Info label="Service Area" content={item.service_loc[0].area} />
+        {/* Safely accessing area */}
+        <Info
+          label="Service Area"
+          content={item.service_loc?.[0]?.area || "N/A"}
+        />
         <Info label="Price" content={item.service.price} />
       </Box>
       <Box

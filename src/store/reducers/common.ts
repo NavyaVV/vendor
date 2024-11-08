@@ -63,10 +63,22 @@ export const createAssets = createAsyncThunk<Response, Arguments>(
   "common/createAssets",
   async (arg, { rejectWithValue }) => {
     try {
-      console.log("arg.imageParams :", arg.imageParams);
+      // console.log("Input Arguments:", JSON.stringify(arg, null, 2)); 
+      // console.log("arg.imageParams :", arg.imageParams);
       const res = await createAssetsService(arg.imageParams);
       if (res) {
-        console.log("createAssets :", res);
+        console.log(
+          "Create Assets Response:",
+          JSON.stringify(
+            {
+              status: res.data.statusCode,
+              result: res.data.result,
+              error: res.data.error,
+            },
+            null,
+            2
+          )
+        );
         if (res?.data?.statusCode === 200) return res.data.result;
         else return rejectWithValue(res.data.error);
       } else return rejectWithValue(undefined);
