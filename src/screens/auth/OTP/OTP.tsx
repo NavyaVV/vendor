@@ -13,6 +13,7 @@ import { ROUTES } from "@config/routes";
 import moment from "moment";
 import { getTimeDifference } from "@helpers/auth";
 import OtpInput from "./components/OtpInput";
+import { useNavigation } from "@react-navigation/native";
 
 export default ({
   route,
@@ -25,7 +26,7 @@ export default ({
   const [value, setValue] = useState("");
   const [timer, setTimer] = useState("0");
   const dispatch = useAppDispatch();
-
+const navigation = useNavigation()
   useEffect(() => {
     const interval = setInterval(() => {
       if (!moment().isAfter(timerEnd)) setTimer(getTimeDifference(timerEnd));
@@ -48,8 +49,23 @@ export default ({
   };
 
   const handleVerify = useCallback(() => {
-    dispatch(verifyOtp({ otp: value }));
-  }, [value]);
+    console.log("Sending OTP Verification Request:", { otp: value });
+  
+    dispatch(verifyOtp({ otp: value }))
+      .unwrap()
+      .then((result) => {
+        console.log("OTP Verification Successful:", result);
+        navigation.replace(ROUTES.HOME);
+      })
+      .catch((error) => {
+        console.error("OTP Verification Failed:", error);
+        // Add detailed error handling here
+        if (error?.response?.data) {
+          console.error("Detailed Error Data:", error.response.data);
+        }
+      });
+  }, [value, navigation]);
+  
 
   const handleTextChange = (text:string) => {
     dispatch(setError(null))

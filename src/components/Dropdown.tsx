@@ -5,7 +5,8 @@ import { Dropdown } from "react-native-element-dropdown";
 import React, { useMemo } from "react";
 
 const errorBoxHeight = 15;
-interface dropdownProps {
+
+interface DropdownProps {
   mandatory?: boolean;
   setCategory: (text: string | number) => void;
   value?: string | number | null;
@@ -26,10 +27,10 @@ export default ({
   boxWidth,
   dropdownData,
   dropPosition,
-  labelField,
-  valueField,
+  labelField = "label", // Default key for label
+  valueField = "value", // Default key for value
   errorMessage,
-}: dropdownProps) => {
+}: DropdownProps) => {
   const [dropdownList, setDropdownList] = useState<any[]>([]);
   const { colors } = useTheme();
   const error = useMemo(() => {
@@ -40,9 +41,12 @@ export default ({
 
   useEffect(() => {
     if (dropdownData?.length) {
-      setDropdownList([...dropdownData] as any[] ?? [])
+      setDropdownList([...dropdownData]);
+    } else {
+      // Show a "No data found" placeholder if data is empty
+      setDropdownList([{ [labelField]: "No data found", [valueField]: null }]);
     }
-  }, [dropdownData])
+  }, [dropdownData, labelField, valueField]);
 
   return (
     <Box marginTop="m">
@@ -68,12 +72,16 @@ export default ({
           showsVerticalScrollIndicator={false}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
-          labelField={labelField ?? ""}
-          valueField={valueField ?? ""}
+          labelField={labelField}
+          valueField={valueField}
           data={dropdownList}
           style={styles.dropdown}
           value={value}
-          onChange={(item) => setCategory(item[valueField ?? "id"], item)}
+          onChange={(item) => {
+            if (item[valueField] !== null) {
+              setCategory(item[valueField], item);
+            }
+          }}
           iconColor={colors.primary}
         />
       </Box>

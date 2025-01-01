@@ -1,15 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import CountrySelector from "@components/CountrySelector";
 import CustomTextInput from "@components/CustomTextInput";
-import Dropdown from "@components/Dropdown";
 import PhoneNumberInput from "@components/PhoneNumberInput";
 import { setError } from "@store/reducers/profile";
-import { getProfileCategories, getProfileInfo } from "@store/selector/profile";
+import { getProfileInfo } from "@store/selector/profile";
 import { businessProfileParams, profileErrorState } from "@typings/profile";
 import { Box, TrText } from "@utils/Theme";
-import React, { forwardRef, useImperativeHandle, useState } from "react";
+import React, { forwardRef, useImperativeHandle } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ChangeImage from "./ChangeImage";
+import axios from "axios";
+import { Dropdown } from "react-native-element-dropdown";
+import { StyleSheet } from "react-native";
 
 interface changeImageProps {
   errors: profileErrorState | null | undefined;
@@ -21,13 +23,12 @@ export default forwardRef<
   { getData: () => businessProfileParams | undefined },
   changeImageProps
 >(({ errors }, ref) => {
-  const categories = useSelector(getProfileCategories);
   const userDetails = useSelector(getProfileInfo);
   const profile = { ...userDetails?.business_profile };
   delete profile?.created_date;
   delete profile?.updated_date;
-  // delete profile?.id;
   const [params, setParams] = useState<paramState>(profile);
+  const [categories, setCategories] = useState<any[]>([]);
   const dispatch = useDispatch();
 
   useImperativeHandle(ref, () => ({ getData: () => params }));
@@ -43,6 +44,22 @@ export default forwardRef<
     setParams({ ...params, [key]: value });
     dispatch(setError({ ...errors, [key]: "" }));
   };
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(
+          "https://salefox-api.woodenclouds.in/business-service/api/profile/category/"
+        );
+        console.log(response.data.result, "category data");
+        setCategories(response.data.result);
+      } catch (error) {
+        console.error("Error fetching categories", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   return (
     <>
@@ -71,14 +88,20 @@ export default forwardRef<
         errorMessage={errors?.business_name}
       />
 
+      <TrText variant="semibold14" color="primary" marginVertical="s">
+        BUSINESS CATEGORY
+      </TrText>
       <Dropdown
-        label="BUSINESS CATEGORY"
-        labelField="category_name"
+        placeholderStyle={styles.placeholderStyle}
+        selectedTextStyle={styles.selectedTextStyle}
+        style={styles.dropdown}
+        data={categories.length ? categories : []}
+        labelField="title"
         valueField="id"
-        dropdownData={categories ?? []}
         value={params?.business_category}
-        setCategory={(text) => handleTextChange("business_category", text)}
-        errorMessage={errors?.business_category}
+        onChange={(item) => handleTextChange("business_category", item.id)}
+        placeholder="Select a category"
+        error={errors?.business_category}
       />
 
       <CustomTextInput
@@ -146,4 +169,20 @@ export default forwardRef<
       />
     </>
   );
+});
+const styles = StyleSheet.create({
+  dropdown: { height: 50 , borderWidth: 1, padding: 10, borderRadius: 6, borderColor: "#ffc9d0"},
+  placeholderStyle: {
+    fontSize: 13,
+    marginHorizontal: 5,
+    fontFamily: "SFProDisplay-Regular",
+    lineHeight: 15,
+    color: "#2E2E2E",
+  },
+  selectedTextStyle: {
+    fontSize: 13,
+    fontFamily: "SFProDisplay-Regular",
+    lineHeight: 15,
+    color: "#2E2E2E",
+  },
 });

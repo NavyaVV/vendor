@@ -32,8 +32,6 @@ export default ({ refreshControl }: refreshProps) => {
   }, [dispatch]);
 
   const handleEndReach = useCallback(() => {
-    // if (productInfo?.results && productInfo?.next)
-    //   dispatch(productListPagination({ url: productInfo?.next }));
   }, [productInfo?.next, productInfo?.results, dispatch]);
 
   const renderFooter = () => {

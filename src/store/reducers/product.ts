@@ -49,12 +49,16 @@ export const productListing = createAsyncThunk<Response, Arguments, Reducer>(
   async ({ arg }, { rejectWithValue }) => {
     try {
       const res = await productService(arg);
-      console.log(res.data.result.category_list, 'product listing');
-      
+      console.log(res.data.result.results, 'product listing');
+//       console.log("Product Listing with Images:");
+// res.data.result.results.forEach((item, index) => {
+//   console.log(`Product ${index + 1}:`, item.product_images);
+// });
+
       if (res?.data?.statusCode === 200) {
         return {
-          productData: res.data.result, // Product list if available
-          categoryList: res.data.result.category_list, // Category list
+          productData: res.data.result, 
+          categoryList: res.data.result.category_list, 
           error: null,
         };
 
@@ -90,7 +94,7 @@ export const addProduct = createAsyncThunk<Response, Arguments, Reducer>(
   "product/addProduct",
   async ({ arg, callback }, { rejectWithValue, dispatch }) => {
     try {
-      console.log("Arguments for adding product:", arg);
+      // console.log("Arguments for adding product:", arg);
 
       // Additional check for vendor ID
       if (!arg.vendor) {

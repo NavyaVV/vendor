@@ -8,57 +8,111 @@ export const addProductValidation = (
   errorMsg: addProductErrorState;
 } => {
   const returnVal = {
-    isValid: false, // Assume form is valid initially
+    isValid: true, // Assume form is valid initially
     errorMsg: {
       type: "",
       product_category: "",
       product_name: "",
       max_retail_price: "",
-      wholesale_price: "",        
+      wholesale_price: "",
       offer_price: "",
-      document: "",
+      document_ref: "",
+      description: "",
+      user: "",
+      vendor: "",
+      quantity: "",
+      unit: "",
     },
   };
 
-  // Check if the 'product' object exists and if fields are valid
+  // Extract product from addProductData
   const { product } = addProductData;
 
   console.log("Validation - product data:", product);
 
-  // Perform field validations
+  // Validate fields inside product
   if (!product?.product_name?.trim()) {
     returnVal.errorMsg.product_name = "Required*";
-    returnVal.isValid = false;  // Indicate invalid form
-  }
-
-  if (!product?.max_retail_price) {
-    returnVal.errorMsg.max_retail_price = "Required*";
     returnVal.isValid = false;
   }
 
-  if (!product?.wholesale_price) {
-    returnVal.errorMsg.wholesale_price = "Required*";
+  if (!product?.max_retail_price || isNaN(Number(product.max_retail_price))) {
+    returnVal.errorMsg.max_retail_price = "Required* and should be a valid number";
     returnVal.isValid = false;
   }
 
-  if (!product?.product_category) {
+  if (!product?.wholesale_price || isNaN(Number(product.wholesale_price))) {
+    returnVal.errorMsg.wholesale_price = "Required* and should be a valid number";
+    returnVal.isValid = false;
+  }
+
+  if (!product?.offer_price || isNaN(Number(product.offer_price))) {
+    returnVal.errorMsg.offer_price = "Required* and should be a valid number";
+    returnVal.isValid = false;
+  }
+
+  if (!product?.product_category || product?.product_category === 'null' || product?.product_category === '') {
     returnVal.errorMsg.product_category = "Required*";
     returnVal.isValid = false;
   }
 
-  // If there are no error messages, set isValid to true (form is valid)
+  // Check if category is valid
+  const validCategories = [
+    { category_name: "TEST ABC", id: "7b745e66-fab7-4544-8002-124e07c4cba6" },
+    { category_name: "KOll", id: "481ea136-7639-460f-8aaa-c7eec0e160dd" },
+  ];
+
+  const isValidCategory = validCategories.some(
+    (category) => category.id === product?.product_category
+  );
+
+  if (!isValidCategory) {
+    returnVal.errorMsg.product_category = "Invalid category selected*";
+    returnVal.isValid = false;
+  }
+
+  if (product?.quantity && (isNaN(Number(product.quantity)) || product.quantity <= 0)) {
+    returnVal.errorMsg.quantity = "Must be a valid and positive number";
+    returnVal.isValid = false;
+  }
+
+  if (product?.unit && product.unit.trim() === "") {
+    returnVal.errorMsg.unit = "Required*";
+    returnVal.isValid = false;
+  }
+
+  if (product?.description && product.description.trim() === "") {
+    returnVal.errorMsg.description = "Required*";
+    returnVal.isValid = false;
+  }
+
+  if (product?.is_active === undefined || typeof product?.is_active !== 'boolean') {
+    returnVal.errorMsg.is_active = "Required* and should be a boolean";
+    returnVal.isValid = false;
+  }
+
+  // Final check for error messages
   if (
-    !returnVal.errorMsg.product_name &&
-    !returnVal.errorMsg.max_retail_price &&
-    !returnVal.errorMsg.wholesale_price &&
-    !returnVal.errorMsg.product_category
+    returnVal.errorMsg.product_name ||
+    returnVal.errorMsg.max_retail_price ||
+    returnVal.errorMsg.wholesale_price ||
+    returnVal.errorMsg.offer_price ||
+    returnVal.errorMsg.product_category ||
+    returnVal.errorMsg.quantity ||
+    returnVal.errorMsg.unit ||
+    returnVal.errorMsg.description ||
+    returnVal.errorMsg.is_active
   ) {
-    returnVal.isValid = true;
+    returnVal.isValid = false;
   }
 
   console.log("Validation result:", returnVal);
   return returnVal;
 };
+
+
+
+
 
 
 export const deleteProduct = async (

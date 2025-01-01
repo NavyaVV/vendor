@@ -1,7 +1,6 @@
 export const endpoints = {
   login: "/auth-service/api/login/otp/",
   forgotPassword: "forgot-password/",
-  verifyOtp: "/auth-service/api/login/auth_code/",
   verifyAuthCode: "/auth-service/api/login/access_token/",
   resetPassword: "reset-password/",
   profile: "/business-service/api/profile/details/",
@@ -12,13 +11,13 @@ export const endpoints = {
   productCategory: "/business-service/api/product/category/",
   campaign: "/campaign-service/campaign/",
   campaignVendor: "/campaign-service/campaign/vendor",
-  portfolio: "/campaign-service/portfolio/", // "portfolio/",
+  portfolio: "/campaign-service/portfolio/",
   addPortfolio: "/campaign-service/portfolio",
-  addPortfolioEntity: "/campaign-service/portfolio/addEntity", // "portfolio/addEntity",
-  removePortfolioEntity: "/campaign-service/portfolio/removeEntity", // "portfolio/removeEntity", //
-  portfolioCategory: "/campaign-service/portfolio-category", // "portfolio-category/active/", //
-  portfolioService: "/campaign-service/service", // "service/", //
-  portfolioProduct: "/campaign-service/product", // "product/", //
+  addPortfolioEntity: "/campaign-service/portfolio/addEntity", 
+  removePortfolioEntity: "/campaign-service/portfolio/removeEntity",
+  portfolioCategory: "/campaign-service/portfolio-category", 
+  portfolioService: "/campaign-service/service", 
+  portfolioProduct: "/campaign-service/product", 
   service: "/business-service/api/service/",
   serviceType: "/business-service/api/service/type/",
   wallet: "wallet-cash",
@@ -27,7 +26,7 @@ export const endpoints = {
   coupons: "coupons",
   couponsValidate: "coupons/validate",
   paymentSplitup: "payment/split-up",
-  addProduct: "/business-service/api/product/",
+  addProduct: "/business-service/api/product/", 
   deleteProduct: "/business-service/api/product/",
   createAssetsOld: "/asset-service/api/",
   createAssets: "/asset-service/api/create/asset/",

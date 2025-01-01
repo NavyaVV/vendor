@@ -135,6 +135,7 @@ export interface addProductErrorState {
   description?: Array<string> | string;
   user?: Array<string> | string;
   product_category?: Array<string> | string;
+  vendor?: Array<string> | string;
 }
 
 export interface productFilterState {
