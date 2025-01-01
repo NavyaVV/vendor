@@ -70,7 +70,7 @@ export default forwardRef<
         justifyContent="center"
       >
         <ChangeImage
-          handleImage={uploadProfile}
+          handleImage={ uploadProfile }
           updatedImage={
             params?.imageData?.image_ref ||
             `data:image/png;base64,${params?.profile_image_ref}`
@@ -83,95 +83,95 @@ export default forwardRef<
       </TrText>
       <CustomTextInput
         label="BUSINESS NAME"
-        value={params?.business_name}
-        onChangeText={(text) => handleTextChange("business_name", text)}
-        errorMessage={errors?.business_name}
+        value={ params?.business_name }
+        onChangeText={ (text) => handleTextChange("business_name", text) }
+        errorMessage={ errors?.business_name }
       />
 
       <TrText variant="semibold14" color="primary" marginVertical="s">
         BUSINESS CATEGORY
       </TrText>
       <Dropdown
-        placeholderStyle={styles.placeholderStyle}
-        selectedTextStyle={styles.selectedTextStyle}
-        style={styles.dropdown}
-        data={categories.length ? categories : []}
+        placeholderStyle={ styles.placeholderStyle }
+        selectedTextStyle={ styles.selectedTextStyle }
+        style={ styles.dropdown }
+        data={ categories.length ? categories : [] }
         labelField="title"
         valueField="id"
-        value={params?.business_category}
-        onChange={(item) => handleTextChange("business_category", item.id)}
+        value={ params?.business_category }
+        onChange={ (item) => handleTextChange("business_category", item.id) }
         placeholder="Select a category"
-        error={errors?.business_category}
+        error={ errors?.business_category }
       />
 
       <CustomTextInput
         label="WEBSITE"
-        value={params?.website_url}
-        onChangeText={(text) => handleTextChange("website_url", text)}
-        errorMessage={errors?.website_url}
+        value={ params?.website_url }
+        onChangeText={ (text) => handleTextChange("website_url", text) }
+        errorMessage={ errors?.website_url }
       />
 
       <PhoneNumberInput
         label="PHONE NUMBER"
         keyboardType="number-pad"
-        value={params?.company_phone}
-        onChangeText={(text) => handleTextChange("company_phone", text)}
-        errorMessage={errors?.company_phone}
+        value={ params?.company_phone }
+        onChangeText={ (text) => handleTextChange("company_phone", text) }
+        errorMessage={ errors?.company_phone }
       />
       <CustomTextInput
         label="LANDLINE"
         keyboardType="number-pad"
-        value={params?.company_landline}
-        errorMessage={errors?.company_landline}
-        onChangeText={(text) => handleTextChange("company_landline", text)}
+        value={ params?.company_landline }
+        errorMessage={ errors?.company_landline }
+        onChangeText={ (text) => handleTextChange("company_landline", text) }
       />
       <CustomTextInput
         label="EMAIL"
-        value={params?.company_email}
-        onChangeText={(text) => handleTextChange("company_email", text)}
-        errorMessage={errors?.company_email}
+        value={ params?.company_email }
+        onChangeText={ (text) => handleTextChange("company_email", text) }
+        errorMessage={ errors?.company_email }
       />
       <CustomTextInput
         label="ADDRESS"
-        value={params?.address}
-        onChangeText={(text) => handleTextChange("address", text)}
-        errorMessage={errors?.address}
+        value={ params?.address }
+        onChangeText={ (text) => handleTextChange("address", text) }
+        errorMessage={ errors?.address }
       />
 
       <CountrySelector
-        onChangeFn={(text) => handleTextChange("country", text)}
+        onChangeFn={ (text) => handleTextChange("country", text) }
       />
 
       <CustomTextInput
         label="STATE OR PROVINCE"
-        value={params?.state}
-        onChangeText={(text) => handleTextChange("state", text)}
-        errorMessage={errors?.state}
+        value={ params?.state }
+        onChangeText={ (text) => handleTextChange("state", text) }
+        errorMessage={ errors?.state }
       />
 
       <CustomTextInput
         label="ZIPCODE"
-        value={params?.zip_code}
-        onChangeText={(text) => handleTextChange("zip_code", text)}
-        errorMessage={errors?.zip_code}
+        value={ params?.zip_code }
+        onChangeText={ (text) => handleTextChange("zip_code", text) }
+        errorMessage={ errors?.zip_code }
       />
       <CustomTextInput
         label="GST NO"
-        value={params?.gst}
-        onChangeText={(text) => handleTextChange("gst", text)}
-        errorMessage={errors?.gst}
+        value={ params?.gst }
+        onChangeText={ (text) => handleTextChange("gst", text) }
+        errorMessage={ errors?.gst }
       />
       <CustomTextInput
         label="PAN NO"
-        value={params?.pan}
-        onChangeText={(text) => handleTextChange("pan", text)}
-        errorMessage={errors?.pan}
+        value={ params?.pan }
+        onChangeText={ (text) => handleTextChange("pan", text) }
+        errorMessage={ errors?.pan }
       />
     </>
   );
 });
 const styles = StyleSheet.create({
-  dropdown: { height: 50 , borderWidth: 1, padding: 10, borderRadius: 6, borderColor: "#ffc9d0"},
+  dropdown: { height: 50, borderWidth: 1, padding: 10, borderRadius: 6, borderColor: "#ffc9d0" },
   placeholderStyle: {
     fontSize: 13,
     marginHorizontal: 5,

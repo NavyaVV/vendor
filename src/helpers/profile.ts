@@ -70,7 +70,7 @@ export const editProfileValidation = (
   if (!userProfileDatas.company_landline?.trim()) {
     returnVal.status = true;
     returnVal.errorMsg.company_landline = "Landline is required";
-  }
+  } 
   if (!userProfileDatas.address?.trim()) {
     returnVal.status = true;
     returnVal.errorMsg.address = "Address is required";

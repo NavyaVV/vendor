@@ -1,3 +1,6 @@
+if (__DEV__) {
+  require("./ReactotronConfig");
+}
 import Root from "./config/RootNavigator";
 import ThemeProvider from "./utils/Theme";
 import React, { useEffect } from "react";

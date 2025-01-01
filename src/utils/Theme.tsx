@@ -420,6 +420,7 @@ const theme = createTheme({
 });
 
 export type Theme = typeof theme;
+
 export const darkTheme: Theme = {
   ...theme,
   colors: {
@@ -490,8 +491,8 @@ export const useTheme = () => useThemeHook<Theme>();
 export default React.memo(
   ({ children, darkMode }: { children: ReactNode; darkMode: boolean }) => (
     // <ThemeProvider {...{theme}}>{children}</ThemeProvider>
-    <ThemeProvider theme={darkMode ? darkTheme : theme}>
-      {children}
+    <ThemeProvider theme={ darkMode ? darkTheme : theme }>
+      { children }
     </ThemeProvider>
   )
 );

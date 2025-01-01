@@ -19,7 +19,7 @@ export default () => {
     },
   ];
 
-  const render = ({ item }) => {
+  const render = ({ item }: { item: any }) => {
     return (
       <ImageBox
         width={265}
@@ -52,6 +52,7 @@ export default () => {
       </ImageBox>
     );
   };
+
   return (
     <Box marginHorizontal="xxl">
       <Text variant="regular12" marginVertical="l">
