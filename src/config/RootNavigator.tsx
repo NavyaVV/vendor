@@ -37,19 +37,19 @@ export const Root = () => {
       fallback={<Text>Loading...</Text>}
     >
       <RootStack.Navigator>
-        {/* {!token?.access_token ? (
+        {!token?.access_token ? (
           <RootStack.Screen
             name={ROUTES.AUTH}
             options={{ headerShown: false }}
             component={AuthNavigator}
           />
-        ) : ( */}
+        ) : (
           <RootStack.Screen
             name={ROUTES.APP}
             options={{ headerShown: false }}
             component={DrawerNavigator}
           />
-        {/* )} */}
+        )}
       </RootStack.Navigator>
     </NavigationContainer>
   );

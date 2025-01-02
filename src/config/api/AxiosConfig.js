@@ -3,52 +3,57 @@ import { getItem } from '@config/utils/functions';
 
 const axiosInstance = axios.create({
   baseURL: 'https://salefox-api.woodenclouds.in/',
+  timeout: 10000, // Set a timeout to handle slow network issues
 });
 
-//request
+// Request Interceptor
 axiosInstance.interceptors.request.use(
-  async config => {
-    const token = await getItem('token');
-    console.log('Token:', token);
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+  async (config) => {
+    try {
+      const token = await getItem('token');
+      console.log('Token:', token);
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      } else {
+        console.warn('No token found');
+      }
+    } catch (err) {
+      console.error('Error fetching token:', err);
     }
     return config;
   },
-  error => {
+  (error) => {
+    console.error('Request error:', error);
     return Promise.reject(error);
-  },
+  }
 );
 
-// response interceptor
+// Response Interceptor
 axiosInstance.interceptors.response.use(
-  response => {
+  (response) => {
     const appData = response?.data?.app_data;
     if (appData && appData.StatusCode === 6000) {
       return appData;
     } else {
-      console.log('Response data:', response.data);
-      console.log('Error Title:', appData?.title);
-      console.log('Error Message:', appData?.message);
+      console.error('Error in response app_data:', appData?.message || 'Unknown error');
       return Promise.reject(new Error(appData?.message || 'Something went wrong.'));
     }
   },
-  error => {
+  (error) => {
     const requestUrl = error.config ? error.config.url : 'Unknown';
-    console.log(`Error API Endpoint: ${requestUrl}`, error);
+    console.error(`Error API Endpoint: ${requestUrl}`, error);
 
     if (error.response) {
-      console.log('Error Status:', error.response.status);
-      console.log('Error Response:', JSON.stringify(error.response.data, null, 2));
+      console.error('Error Status:', error.response.status);
+      console.error('Error Response:', JSON.stringify(error.response.data, null, 2));
+    } else if (error.code === 'ECONNABORTED') {
+      console.error('Error: Request timeout');
     } else {
-      console.log('Error', error.message);
+      console.error('Error:', error.message);
     }
 
     return Promise.reject(error);
   }
 );
 
-
 export default axiosInstance;
-
-

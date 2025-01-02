@@ -1,6 +1,7 @@
 export const endpoints = {
   login: "/auth-service/api/login/otp/",
   forgotPassword: "forgot-password/",
+  verifyOtp: "/auth-service/api/login/auth_code/",
   verifyAuthCode: "/auth-service/api/login/access_token/",
   resetPassword: "reset-password/",
   profile: "/business-service/api/profile/details/",
