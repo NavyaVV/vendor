@@ -19,11 +19,11 @@ export default () => {
   const profileInfo = useAppSelector(getProfileInfo);
   const categories = useAppSelector(getProfileCategories);
   const dispatch = useAppDispatch();
-  const focussed = useIsFocused();
+  const focused = useIsFocused();
 
   useEffect(() => {
     dispatch(profileView());
-  }, [focussed]);
+  }, [focused]);
 
   useEffect(() => {
     if (profileInfo) {
@@ -37,18 +37,18 @@ export default () => {
   )?.category_name;
 
   return (
-    <Box flex={1} backgroundColor="secondary">
-      <ScrollView bounces={false} showsVerticalScrollIndicator={false}>
+    <Box flex={ 1 } backgroundColor="secondary">
+      <ScrollView bounces={ false } showsVerticalScrollIndicator={ false }>
         <ImageBox
-          source={images.profileBg.source}
-          height={500 * images.profileBg.aspectRatio}
+          source={ images.profileBg.source }
+          height={ 500 * images.profileBg.aspectRatio }
           width="100%"
           alignItems="center"
         >
           <ProfileHeader
             iconName="edit"
             headerText="Profile"
-            onPress={() => navigate(ROUTES.EDITPROFILE)}
+            onPress={ () => navigate(ROUTES.EDITPROFILE) }
           />
         </ImageBox>
         <Box
@@ -56,34 +56,34 @@ export default () => {
           justifyContent="center"
           borderRadius="x5l"
           alignItems="center"
-          height={118}
-          width={118}
-          bottom={70}
-          left={(WIDTH - 118) * 0.5}
+          height={ 118 }
+          width={ 118 }
+          bottom={ 70 }
+          left={ (WIDTH - 118) * 0.5 }
         >
-          <PlaceholderIcon icon="user" size={60} />
+          <PlaceholderIcon icon="user" size={ 60 } />
           <Image
             source={
               businessProfile?.profile_image_ref?.length
                 ? {
-                    uri: `data:image/png;base64,${businessProfile.profile_image_ref}`,
-                  }
+                  uri: `data:image/png;base64,${businessProfile.profile_image_ref}`,
+                }
                 : images.profileBg.source
             }
             borderRadius="x5l"
-            height={108}
-            width={108}
+            height={ 108 }
+            width={ 108 }
           />
         </Box>
-        <Box alignItems="center" marginVertical="xl" bottom={80} flex={2}>
+        <Box alignItems="center" marginVertical="xl" bottom={ 80 } flex={ 2 }>
           <Text variant="semibold20" color="primary">
-            {businessProfile.business_name}
+            { businessProfile?.business_name }
           </Text>
           <Text variant="regular14" color="textColor11">
-            {category}
+            { category }
           </Text>
         </Box>
-        <Box flex={2} bottom={130}>
+        <Box flex={ 2 } bottom={ 130 }>
           <BasicProfileDetails />
           <Box marginStart="x2l">
             <TrText variant="semibold14" color="primary">

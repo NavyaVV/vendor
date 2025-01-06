@@ -55,7 +55,7 @@ const navigation = useNavigation()
       .unwrap()
       .then((result) => {
         console.log("OTP Verification Successful:", result);
-        navigation.replace(ROUTES.HOME);
+        // navigation.replace(ROUTES.HOME);
       })
       .catch((error) => {
         console.error("OTP Verification Failed:", error);

@@ -39,7 +39,7 @@ export default ({ handleImage, updatedImage }: imageProp) => {
 
   const choosePhotoFromLibrary = () => {
     ImageCropPicker.openPicker({
-      width: 300,
+      width: 1000,
       height: 1000,
       cropping: true,
       multiple: false,
